@@ -71,11 +71,32 @@ class Personaje{
 class Poder{
 	method agilidad(personaje)	//C/u de estas caracteristicas se calculan utilizando
 	method fuerza(personaje)	//valores del personaje y valores segun el tipo de poder.
-	method habilidadEspecial(personaje)
+	method habilidadEspecial(personaje)= personaje.espiritualidad() + personaje.estrategia() //Solo poder amplificado lo va a cambiar
 	
 	method capacidadBatalla(personaje){
 		( self.agilidad(personaje) + self.fuerza(personaje) ) * self.habilidadEspecial(personaje)
 	}
+}
+
+class Velocidad inherits Poder{
+	var rapidez
+	override method agilidad(personaje)= personaje.estrategia() * rapidez
+	override method fuerza(personaje)= personaje.espiritualidad() * rapidez
+}
+
+class Vuelo inherits Poder{
+	var alturaMax
+	var energiaDespegue
+	override method agilidad(personaje)= ( (personaje.estrategia() * alturaMax) / energiaDespegue )
+	override method fuerza(personaje)= ( (personaje.espiritualidad() + alturaMax) - energiaDespegue )
+}
+
+class PoderAmplificador inherits Poder{
+	var poderBase
+	var nroAmplificador
+	override method agilidad(personaje)= poderBase.agilidad(personaje)
+	override method fuerza(personaje)= poderBase.fuerza(personaje)
+	override method habilidadEspecial(personaje)= poderBase.habilidadEspecial(personaje) * nroAmplificador
 }
 
 
