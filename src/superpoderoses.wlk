@@ -22,7 +22,6 @@ se mantiene pero varian esas 3 cosas.
 		|	habilidad: espiritualidad + estrategia 	|
 		|-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-| 
 		 
-		 
 * VUELO: se define con una altura maxima (num) y una energia para
 		 despegue (num)
 		 
@@ -69,6 +68,24 @@ class Personaje{
 	
 	//Para determinar el mejor poder:
 	method mejorPoder()= poderes.max( {poder=> poder.capacidadBatalla(self)} )
+	
+	method inmuneRadiacion()= poderes.any({poder => poder.inmuneRadiacion()})
+	
+	method comparaCapacidad(peligro)= self.capacidadBatalla() > peligro.capacidadBatalla() //Devuelve true or false
+	
+	//Puede enfrentar un peligro si su cap.Batalla es MAYOR que la del peligro
+	//y si es inmune. No importa si es inmune si el peligro NO es radioactivo por 
+	//lo que deberia haber una validacion extra para no sumar una condicion que en
+	//algunos casos no es importante. Entonces...
+	method manejarRadiactividad(peligro){
+		if(peligro.desechosRadiactivos()){
+			return self.inmuneRadiacion()
+		}else{
+			return true
+		}
+	}
+	
+	method enfrentaPeligro(peligro)= self.comparaCapacidad(peligro) && self.manejarRadiactividad(peligro)
 }
 
 class Poder{
@@ -79,12 +96,15 @@ class Poder{
 	method capacidadBatalla(personaje){
 		return (self.agilidad(personaje) + self.fuerza(personaje)) * self.habilidadEspecial(personaje)
 	}
+	
+	method inmuneRadiacion()
 }
 
 class Velocidad inherits Poder{
 	var rapidez
 	override method agilidad(personaje)= personaje.estrategia() * rapidez
 	override method fuerza(personaje)= personaje.espiritualidad() * rapidez
+	override method inmuneRadiacion() = false
 }
 
 class Vuelo inherits Poder{
@@ -92,6 +112,7 @@ class Vuelo inherits Poder{
 	var energiaDespegue
 	override method agilidad(personaje)= ( (personaje.estrategia() * alturaMax) / energiaDespegue )
 	override method fuerza(personaje)= ( (personaje.espiritualidad() + alturaMax) - energiaDespegue )
+	override method inmuneRadiacion() = alturaMax > 200
 }
 
 class PoderAmplificador inherits Poder{
@@ -100,11 +121,10 @@ class PoderAmplificador inherits Poder{
 	override method agilidad(personaje)= return poderBase.agilidad(personaje)
 	override method fuerza(personaje)= return poderBase.fuerza(personaje)
 	override method habilidadEspecial(personaje)= return poderBase.habilidadEspecial(personaje) * nroAmplificador
+	override method inmuneRadiacion() = true
 }
 
 /*
-Un equipo lo forman varios personajes.
-
 ***********REQUERIMIENTOS PARTE 2***********
 1) Saber cuál es el miembro mas vulnerable: el/la de capacidad de batalla menor
 2) Saber la calidad del equipo: promedio de capacidades
@@ -114,8 +134,32 @@ Resumen: equipo tambien es una clase que va a tener una lista de personajes y me
 c/u de los requerimientos, no mucho mas.
 */
 
+/*
+De un peligro se conoce la capacidad de batalla y si tiene desechos radioactivos.
 
-//Parte 2: equipo
+Un personaje afronta un peligro solo si:
+* Capacidad de batalla del personaje >>> capacidad batalla peligro
+* Si puede manejar radioactividad ---> personaje inmune a radiacion. ----> Si el peligro NO es radiactivo, esta variable no importa
+* 
+====> El peligro puede ser afrontado por el grupo si c/u de los miembros puede
+	  afrontarlo individualmente.
+ 
+Un personaje es inmune a la radioactividad si tiene al menos un poder que se la de.
+* Vuelo: otorga inmunidad si la alturaMax >> 200
+* Velocidad: NUNCA
+* Poder Amplificador: SIEMPRE
+Agrego esa data a c/poder.
+***********REQUERIMIENTOS PARTE 3***********
+1) Saber si un personaje puede enfrentar un peligro
+2) Saber si el equipo puede afrontar un peligro (sensato).
+ 
+Resumen: para el 1) hay que agregar cosas a la clase de Personajes para saber si el personaje
+puede afrontar al peligro, si es inmune, etc. Para el 2) hay que agregar a la clase
+Equipo si pueden contra ese peligro tooodos los miembros.
+Hace falta una clase de peligro con sus variables (capacidad, desechos). Hay varios casos de prueba.
+*/
+
+//Parte 2: equipo ////// Parte 3: peligros (consultas)
 
 class Equipo{
 	var miembros = []
@@ -129,7 +173,15 @@ class Equipo{
 	//podria estar directamente en la clase de Personajes dado que es algo compartido por TODOS. 
 	//.map devuelve una lista.
 	method mejoresPoderes()= miembros.map({miembro => miembro.mejorPoder()})
+	
+	method afrontaPeligro(peligro)= miembros.all({miembro => miembro.enfrentaPeligro(peligro)})
 }
+
+class Peligro{
+	var property capacidadBatalla = 0
+	var property desechosRadiactivos = false //Valor por default
+}
+
 
 
 
