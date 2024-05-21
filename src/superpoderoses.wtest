@@ -44,24 +44,18 @@ describe "Superpoderoses" {
 		cooperativaJusticiera = new Equipo(miembros= [capitanaPatriaGrande, plusvaliaCero, usinaDeDerechos])
 
 		
-// Punto 3 
+// Punto 3 y Punto 4
 // Peligros
 		// TODO: constrir/obtener un peligro con capacidad de batalla = 30 y NO tiene desechos radiactivos 
-		peligroSencillo = new Peligro(capacidadBatalla= 30, desechosRadiactivos= false) 
+		peligroSencillo = new Peligro(capacidadBatalla= 30, desechosRadiactivos= false, nivelComplejidad= 1, personajesQueSeBanca= 2) 
 		// TODO: constrir/obtener un peligro con capacidad de batalla = 30 y tiene desechos radiactivos
-		peligroSencilloRadiactivo = new Peligro(capacidadBatalla= 30, desechosRadiactivos= true) 
+		peligroSencilloRadiactivo = new Peligro(capacidadBatalla= 30, desechosRadiactivos= true, nivelComplejidad= 1, personajesQueSeBanca= 2) 
 		// TODO: constrir/obtener un peligro con capacidad de batalla = 50 y NO tiene desechos radiactivos
-		peligroModerado = new Peligro(capacidadBatalla= 50, desechosRadiactivos= false) 
+		peligroModerado = new Peligro(capacidadBatalla= 50, desechosRadiactivos= false, nivelComplejidad= 2, personajesQueSeBanca= 1) 
 		// TODO: constrir/obtener un peligro con capacidad de batalla = 400 y tiene desechos radiactivos
-		peligroAlto = new Peligro(capacidadBatalla= 400, desechosRadiactivos= true) 
-/*
-// Punto 4
-        // TODO: agregar al peligroSencillo nivel de complejidad = 1 y cantidad de personajes que se banca en simultaneo = 2
-        // TODO: agregar al peligroSencilloRadiactivo nivel de complejidad = 1 y cantidad de personajes que se banca en simultaneo = 2
-        // TODO: agregar al peligroModerado nivel de complejidad = 2 y cantidad de personajes que se banca en simultaneo = 1
-        // TODO: agregar al peligroAlto nivel de complejidad = 3 y cantidad de personajes que se banca en simultaneo = 2
-        
+		peligroAlto = new Peligro(capacidadBatalla= 400, desechosRadiactivos= true, nivelComplejidad= 3, personajesQueSeBanca= 2) 
 
+/*
 // Punto 5 
 		fragmentadorMonopolios = null // TODO: constrir/obtener un Metahumano con estrategia = 1, espiritualidad = 6 y poderes = vueloRasante
 		educadorPublico = null // TODO: constrir/obtener un Mago con poder acumulado = 12, estrategia = 1, espiritualidad = 6 y poderes = vueloRasante	
@@ -109,7 +103,6 @@ describe "Superpoderoses" {
 		assert.equals([vueloAlto, vueloRasanteAmplificado, vueloRasante], cooperativaJusticiera.mejoresPoderes())
 	}
 
-	
 
 	test "punto 3.1 personajes contra el peligro" {
 		// TODO: Verificar que peligroSencillo puede ser afrontado por capitanaPatriaGrande
@@ -140,8 +133,7 @@ describe "Superpoderoses" {
 		// TODO: Verificar que peligroAlto NO puede ser afrontado por usinaDeDerechos
 		assert.notThat(usinaDeDerechos.enfrentaPeligro(peligroAlto))
 	}
-	
-	
+		
 
 	test "punto 3.2 Saber si un peligro es sensato " {
 		// TODO: Verificar que peligroSencillo es sensato para cooperativaJusticiera
@@ -155,44 +147,49 @@ describe "Superpoderoses" {
 	}
 
 	
-/*
 	test "punto 4.1 Afrontar peligro individualmente: OK" {
 		// TODO: Hacer que usinaDeDerechos afronte a peligroSencillo 
+		usinaDeDerechos.enfrentar(peligroSencillo)
 		// TODO: Verificar que la estrategia de usinaDeDerechos es 2
+		assert.equals(2, usinaDeDerechos.estrategia())
 	}
- */
 
-/*
 	test "punto 4.1 Afrontar peligro individualmente: no OK por radioactividad" {
 		// TODO: Hacer que usinaDeDerechos afronte a peligroSencilloRadiactivo (NO SE PUEDE!)
+		assert.throwsException({usinaDeDerechos.enfrentar(peligroSencilloRadiactivo)})
 		// TODO: Verificar que la estrategia de usinaDeDerechos es 1
+		assert.equals(1, usinaDeDerechos.estrategia())
 	}
- */
-	
-/*
+
 	test "punto 4.1 Afrontar peligro individualmente: no OK por capacidad de batalla" {
 		// TODO: Hacer que usinaDeDerechos afronte a peligroModerado (NO SE PUEDE!)
+		assert.throwsException({usinaDeDerechos.enfrentar(peligroModerado)})
 		// TODO: Verificar que la estrategia de usinaDeDerechos es 1
+		assert.equals(1, usinaDeDerechos.estrategia())
 	}
- */
-	
-/*
+
 	test "punto 4.2  Afrontar peligro (moderado) en equipo  " {
 		// TODO: Hacer que cooperativaJusticiera afronte a peligroModerado
+		cooperativaJusticiera.enfrentar(peligroModerado)
 		// TODO: Verificar que la estrategia de capitanaPatriaGrande es 5
+		assert.equals(5, capitanaPatriaGrande.estrategia())
 		// TODO: Verificar que la estrategia de plusvaliaCero es 4
-		// TODO: Verificar que la estrategia de usinaDeDerechos es 1		
+		assert.equals(4, plusvaliaCero.estrategia())
+		// TODO: Verificar que la estrategia de usinaDeDerechos es 1
+		assert.equals(1, usinaDeDerechos.estrategia())		
 	}
- */
 
-/*
 	test "punto 4.2  Afrontar peligro (alto) en equipo (no ok)" {
 		// TODO: Hacer que cooperativaJusticiera afronte a peligroAlto (NO SE PUEDE!)
+		assert.throwsException({cooperativaJusticiera.enfrentar(peligroAlto)})
 		// TODO: Verificar que la estrategia de capitanaPatriaGrande es 3
+		assert.equals(3, capitanaPatriaGrande.estrategia())
 		// TODO: Verificar que la estrategia de plusvaliaCero es 2
+		assert.equals(2, plusvaliaCero.estrategia())
 		// TODO: Verificar que la estrategia de usinaDeDerechos es 1
+		assert.equals(1, usinaDeDerechos.estrategia())
 	}
- */	
+	
 
 /*
 	test "punto 5.1  Metahumano " {

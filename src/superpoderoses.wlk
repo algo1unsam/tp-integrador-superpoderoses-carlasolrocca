@@ -85,7 +85,15 @@ class Personaje{
 		}
 	}
 	
-	method enfrentaPeligro(peligro)= self.comparaCapacidad(peligro) && self.manejarRadiactividad(peligro)
+	method enfrentaPeligro(peligro)= self.comparaCapacidad(peligro) && self.manejarRadiactividad(peligro) //Devuelve true or false
+	
+	method enfrentar(peligro){
+		if(self.enfrentaPeligro(peligro)){
+			estrategia += peligro.nivelComplejidad()		//Lo puede enfrentar y aumenta su estrategia
+		}else{
+			self.error("No puedo enfrentar este peligro!")
+		}
+	}
 }
 
 class Poder{
@@ -175,14 +183,41 @@ class Equipo{
 	method mejoresPoderes()= miembros.map({miembro => miembro.mejorPoder()})
 	
 	method afrontaPeligro(peligro)= miembros.all({miembro => miembro.enfrentaPeligro(peligro)})
+	
+	//Filtro una lista de todos los personajes de un equipo que sí pueden enfrentar un peligro para poder pasarselo al metodo de 
+	//peligro.ganaPeligro() para que comparando el .size() de esta lista contra la cantidad de gente que se banca se pueda saber
+	//si el equipo va bien o mal.
+	method filtradoEquipoQuePuedeEnfrentar(peligro)= miembros.filter({miembro => miembro.enfrentaPeligro(peligro)})
+	
+	method enfrentar(peligro){
+		if(not peligro.ganaPeligro(self.filtradoEquipoQuePuedeEnfrentar(peligro))){ //Si lo puede enfrentar, c/personaje
+			self.filtradoEquipoQuePuedeEnfrentar(peligro).forEach({miembro => miembro.enfrentar(peligro)})		//lo enfrenta por separado
+		}else{
+			self.error("El equipo no puede enfrentar este peligro!")
+		}
+	}
 }
 
 class Peligro{
 	var property capacidadBatalla = 0
 	var property desechosRadiactivos = false //Valor por default
+	
+	var property nivelComplejidad = 0
+	var property personajesQueSeBanca = 0
+	
+	method ganaPeligro(equipo)= personajesQueSeBanca > equipo.size()
 }
 
-
+/*
+***********REQUERIMIENTOS PARTE 4***********
+1) Hacer que un personaje enfrente un peligro de manera individual
+2) Hacer que un equipo enfrente un peligro
+ 
+Resumen: se agregan esas 2 variables a Peligro. Cuando 1 personaje afronta
+un peligro, su nivel de estrategia aumenta en la cantidad de ptos que tiene de complejidad
+el peligro.
+2 condiciones para enfrentarlo en equipo: que TODOS puedan y que superen a la cant de personajes que se banca el peligro
+*/
 
 
 
