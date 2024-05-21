@@ -1,25 +1,19 @@
 import superpoderoses.*
 
 describe "Superpoderoses" {
-	
-	/* ACLARACIÓN 
-	 * El test asume todos los objetos como instancias de clases. 
-	 * Si el diseño de la solución utiliza objetos bien conocidos en algunos casos entonces 
-	 * se debe remover la declaración de la variable y la línea en que se sugiere la instanciación.
-	 */
 
-	const altaVelocidad
-	const superVelocidad
-	const vueloRasante
-	const vueloAlto
-	const vueloRasanteAmplificado
-	const superVelocidadAmplificada
+	var altaVelocidad
+	var superVelocidad
+	var vueloRasante
+	var vueloAlto
+	var vueloRasanteAmplificado
+	var superVelocidadAmplificada
 	
-	const capitanaPatriaGrande
-	const plusvaliaCero
-	const usinaDeDerechos
+	var capitanaPatriaGrande
+	var plusvaliaCero
+	var usinaDeDerechos
 	
-	const cooperativaJusticiera
+	var cooperativaJusticiera
 	
 	const peligroSencillo
 	const peligroSencilloRadiactivo 
@@ -33,7 +27,7 @@ describe "Superpoderoses" {
 	method initialize(){
 				
 // Punto 1
-// Poderes
+// Poderes y Personajes
 		altaVelocidad = new Velocidad(rapidez = 2)
 		superVelocidad = new Velocidad(rapidez = 3)
 		vueloRasante = new Vuelo(alturaMax= 10, energiaDespegue= 10)
@@ -41,78 +35,76 @@ describe "Superpoderoses" {
 		vueloRasanteAmplificado = new PoderAmplificador(poderBase= vueloRasante, nroAmplificador= 4)
 		superVelocidadAmplificada = new PoderAmplificador(poderBase= superVelocidad, nroAmplificador= 3)
 	
-		// Personajes 
 		capitanaPatriaGrande = new Personaje(espiritualidad= 5, estrategia= 3, poderes= [superVelocidadAmplificada, vueloAlto])
-		plusvaliaCero = new Personaje( espiritualidad= 4, estrategia= 2, poderes= [altaVelocidad, vueloRasanteAmplificado] )
-		usinaDeDerechos = new Personaje(espiritualidad= 4, estrategia= 2, poderes= [])
-		 // TODO: constrir/obtener un personaje con estrategia = 1, espiritualidad = 6 y poderes = vueloRasante
+		plusvaliaCero = new Personaje(espiritualidad= 4, estrategia= 2, poderes= [altaVelocidad, vueloRasanteAmplificado])
+		usinaDeDerechos = new Personaje(espiritualidad= 6, estrategia= 1, poderes= [vueloRasante])
 		
-		// Punto 2
-		// Equipo 
-		cooperativaJusticiera = null // TODO: constrir/obtener un conformado por capitanaPatriaGrande, plusvaliaCero y usinaDeDerechos
-		
-		// Punto 3 
-		// Peligros
+// Punto 2
+// Equipo 
+		cooperativaJusticiera = new Equipo(miembros= [capitanaPatriaGrande, plusvaliaCero, usinaDeDerechos])
+
+/* 		
+// Punto 3 
+// Peligros
 		peligroSencillo = null // TODO: constrir/obtener un peligro con capacidad de batalla = 30 y NO tiene desechos radiactivos  
 		peligroSencilloRadiactivo = null // TODO: constrir/obtener un peligro con capacidad de batalla = 30 y tiene desechos radiactivos
 		peligroModerado = null // TODO: constrir/obtener un peligro con capacidad de batalla = 50 y NO tiene desechos radiactivos
 		peligroAlto = null // TODO: constrir/obtener un peligro con capacidad de batalla = 400 y tiene desechos radiactivos
 
-        // Punto 4
+// Punto 4
         // TODO: agregar al peligroSencillo nivel de complejidad = 1 y cantidad de personajes que se banca en simultaneo = 2
         // TODO: agregar al peligroSencilloRadiactivo nivel de complejidad = 1 y cantidad de personajes que se banca en simultaneo = 2
         // TODO: agregar al peligroModerado nivel de complejidad = 2 y cantidad de personajes que se banca en simultaneo = 1
         // TODO: agregar al peligroAlto nivel de complejidad = 3 y cantidad de personajes que se banca en simultaneo = 2
         
 
-		// Punto 5 
+// Punto 5 
 		fragmentadorMonopolios = null // TODO: constrir/obtener un Metahumano con estrategia = 1, espiritualidad = 6 y poderes = vueloRasante
 		educadorPublico = null // TODO: constrir/obtener un Mago con poder acumulado = 12, estrategia = 1, espiritualidad = 6 y poderes = vueloRasante	
 }
-
-
+*/	
 	
-	
-	/* ACLARACIÓN
-	 * Los tests están comentados para evitar errores y warnings, así poder ir incorporándolos 
-	 * a medida que se avanza con la solución del ejercicio
-	 */
-	
-/*
 	test "punto 1.1 capacidad de batalla que aporta un poder" {
 		// TODO: Verificar que la capacidad de batalla que le aporta superVelocidadAmplificada a capitanaPatriaGrande es 576
+		assert.equals(576, superVelocidadAmplificada.capacidadBatalla(capitanaPatriaGrande))
+		
 		// TODO: Verificar que la capacidad de batalla que le aporta vueloAlto a capitanaPatriaGrande es 876
+		assert.equals(876, vueloAlto.capacidadBatalla(capitanaPatriaGrande))
+		
 		// TODO: Verificar que la capacidad de batalla que le aporta altaVelocidad a plusvaliaCero es 72
+		assert.equals(72, altaVelocidad.capacidadBatalla(plusvaliaCero))
+		
 		// TODO: Verificar que la capacidad de batalla que le aporta vueloRasanteAmplificado a plusvaliaCero es 144
+		assert.equals(144, vueloRasanteAmplificado.capacidadBatalla(plusvaliaCero))
+		
 		// TODO: Verificar que la capacidad de batalla que le aporta vueloRasante a usinaDeDerechos es 49
+		assert.equals(49, vueloRasante.capacidadBatalla(usinaDeDerechos))
 	}
- */	
-
-/*
+	
 	test "punto 1.2 capacidad de batalla de un personaje" {
 		// TODO: Verificar que la capacidad de batalla de capitanaPatriaGrande es 1452
+		assert.equals(1452, capitanaPatriaGrande.capacidadBatalla())
 		// TODO: Verificar que la capacidad de batalla de plusvaliaCero es 216
+		assert.equals(216, plusvaliaCero.capacidadBatalla())
 		// TODO: Verificar que la capacidad de batalla de usinaDeDerechos es 49
+		assert.equals(49, usinaDeDerechos.capacidadBatalla())
 	}
- */	
 
-/*
 	test "punto 2.1 Saber el miembro vulnerable de un equipo" {
 		// TODO: Verificar que miembro mas vulnerable de cooperativaJusticiera es usinaDeDerechos
+		assert.equals(usinaDeDerechos, cooperativaJusticiera.miembroVulnerable())
 	}
- */	
 
-/*
 	test "punto 2.2 Saber la calidad de un equipo" {
 		// TODO: Verificar que la calidad de cooperativaJusticiera es 572.33333
-	}
- */	
+		assert.equals(572.33333, cooperativaJusticiera.calidadEquipo())
+	}	
 
-/*
 	test "punto 2.3 Saber los mejores poderes de un equipo" {
 		// TODO: Verificar que los mejores poderes de cooperativaJusticiera son vueloAlto, vueloRasanteAmplificado y vueloRasante
+		assert.equals([vueloAlto, vueloRasanteAmplificado, vueloRasante], cooperativaJusticiera.mejoresPoderes())
 	}
- */	
+
 	
 /*
 	test "punto 3.1 personajes contra el peligro" {

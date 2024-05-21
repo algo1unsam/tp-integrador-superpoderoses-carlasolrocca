@@ -56,7 +56,7 @@ fuerza y habilidad especial variables segun el personaje y el tipo de poder.
 
 */
 
-//Parte 1
+//Parte 1: poderes y personajes
 class Personaje{
 	var property espiritualidad
 	var property estrategia
@@ -64,17 +64,20 @@ class Personaje{
 	
 	//E capacidades de batalla de sus poderes adecuado a c/personaje
 	method capacidadBatalla(){
-		poderes.sum( {poder => poder.capacidadBatalla(self)} )
+		return poderes.sum( {poder => poder.capacidadBatalla(self)} )
 	}
+	
+	//Para determinar el mejor poder:
+	method mejorPoder()= poderes.max( {poder=> poder.capacidadBatalla(self)} )
 }
 
 class Poder{
 	method agilidad(personaje)	//C/u de estas caracteristicas se calculan utilizando
 	method fuerza(personaje)	//valores del personaje y valores segun el tipo de poder.
-	method habilidadEspecial(personaje)= personaje.espiritualidad() + personaje.estrategia() //Solo poder amplificado lo va a cambiar
+	method habilidadEspecial(personaje)= return personaje.espiritualidad() + personaje.estrategia() //Solo poder amplificado lo va a cambiar
 	
 	method capacidadBatalla(personaje){
-		( self.agilidad(personaje) + self.fuerza(personaje) ) * self.habilidadEspecial(personaje)
+		return (self.agilidad(personaje) + self.fuerza(personaje)) * self.habilidadEspecial(personaje)
 	}
 }
 
@@ -94,15 +97,39 @@ class Vuelo inherits Poder{
 class PoderAmplificador inherits Poder{
 	var poderBase
 	var nroAmplificador
-	override method agilidad(personaje)= poderBase.agilidad(personaje)
-	override method fuerza(personaje)= poderBase.fuerza(personaje)
-	override method habilidadEspecial(personaje)= poderBase.habilidadEspecial(personaje) * nroAmplificador
+	override method agilidad(personaje)= return poderBase.agilidad(personaje)
+	override method fuerza(personaje)= return poderBase.fuerza(personaje)
+	override method habilidadEspecial(personaje)= return poderBase.habilidadEspecial(personaje) * nroAmplificador
 }
 
+/*
+Un equipo lo forman varios personajes.
+
+***********REQUERIMIENTOS PARTE 2***********
+1) Saber cuál es el miembro mas vulnerable: el/la de capacidad de batalla menor
+2) Saber la calidad del equipo: promedio de capacidades
+3) Saber los mejores poderes: conjunto formado por el mejor poder de c/miembro.
+							  El mejor poder es aquel que otorga mas cap. de batalla.
+Resumen: equipo tambien es una clase que va a tener una lista de personajes y metodos para
+c/u de los requerimientos, no mucho mas.
+*/
 
 
+//Parte 2: equipo
 
+class Equipo{
+	var miembros = []
+	
+	method miembroVulnerable()= miembros.min({miembro => miembro.capacidadBatalla()}) //.min() devuelve el de menor valor
 
+	method calidadEquipo()= ( miembros.sum({miembro => miembro.capacidadBatalla()}) / miembros.size() ) //Devuelve solo el nro pero es buena o mala calidad segun qué criterio?
+	
+	//Todos los miembros tienen una lista de poderes. Basicamente hay que revisar esa lista para cada personaje del equipo.
+	//Ya que TODOS tienen poderes y TODOS tienen un poder que es mejor que el resto, la logica para averiguar cuál es ese poder
+	//podria estar directamente en la clase de Personajes dado que es algo compartido por TODOS. 
+	//.map devuelve una lista.
+	method mejoresPoderes()= miembros.map({miembro => miembro.mejorPoder()})
+}
 
 
 
