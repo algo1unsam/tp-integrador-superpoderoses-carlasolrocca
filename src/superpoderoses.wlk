@@ -107,32 +107,3 @@ class PoderAmplificador inherits Poder{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

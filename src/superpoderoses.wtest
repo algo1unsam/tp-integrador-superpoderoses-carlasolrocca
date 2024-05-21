@@ -31,22 +31,21 @@ describe "Superpoderoses" {
 		
 	
 	method initialize(){
-		
-		//aca pueden inicializar todo lo que quieran dentro de este describe "Superpoderoses", cada describe puede tener hasta 1 initilize
-		
-		// Punto 1
-		// Poderes
-		altaVelocidad = null // TODO: constrir/obtener un poder de velocidad con rapidez = 2
-		superVelocidad = null // TODO: constrir/obtener un poder de velocidad con rapidez = 3
-		vueloRasante = null // TODO: constrir/obtener un poder de vuelo con altura maxima = 10 y energia para despegue = 10
-		vueloAlto = null // TODO: constrir/obtener un poder de vuelo con altura maxima = 300 y energia para despegue = 200
-		vueloRasanteAmplificado = null // TODO: constrir/obtener un poder amplificador con poder base = vueloRasante y amplificador = 4
-		superVelocidadAmplificada = null // TODO: constrir/obtener un poder amplificador con poder base = superVelocidad y amplificador = 3
+				
+// Punto 1
+// Poderes
+		altaVelocidad = new Velocidad(rapidez = 2)
+		superVelocidad = new Velocidad(rapidez = 3)
+		vueloRasante = new Vuelo(alturaMax= 10, energiaDespegue= 10)
+		vueloAlto = new Vuelo(alturaMax= 300, energiaDespegue= 200)
+		vueloRasanteAmplificado = new PoderAmplificador(poderBase= vueloRasante, nroAmplificador= 4)
+		superVelocidadAmplificada = new PoderAmplificador(poderBase= superVelocidad, nroAmplificador= 3)
 	
 		// Personajes 
-		capitanaPatriaGrande = null // TODO: constrir/obtener un personaje con estrategia = 3, espiritualidad = 5 y poderes = superVelocidadAmplificada y vueloAlto
-		plusvaliaCero = null // TODO: constrir/obtener un personaje con estrategia = 2, espiritualidad = 4 y poderes = altaVelocidad y vueloRasanteAmplificado
-		usinaDeDerechos = null // TODO: constrir/obtener un personaje con estrategia = 1, espiritualidad = 6 y poderes = vueloRasante
+		capitanaPatriaGrande = new Personaje(espiritualidad= 5, estrategia= 3, poderes= [superVelocidadAmplificada, vueloAlto])
+		plusvaliaCero = new Personaje( espiritualidad= 4, estrategia= 2, poderes= [altaVelocidad, vueloRasanteAmplificado] )
+		usinaDeDerechos = new Personaje(espiritualidad= 4, estrategia= 2, poderes= [])
+		 // TODO: constrir/obtener un personaje con estrategia = 1, espiritualidad = 6 y poderes = vueloRasante
 		
 		// Punto 2
 		// Equipo 
