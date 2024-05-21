@@ -1,16 +1,5 @@
 /*
-Personaje
--estrategia y espiritualidad son dos caracteristicas (val numerico).
--tienen asociados varios poderes
--la rapidez es otra caracteristica? ---> no, solo se menciona en velocidad. es de ese poder.
--cap. de batalla del personaje: E capacidades que aportan sus poderes
-
-
 Tipos de poderes:
-
-----cap. de batalla de 1 poder: (agilidad + fuerza) * habilidadEspecial 
-esas 3 cosas se ***CALCULAN*** para el personaje, el calculo de capBatalla
-se mantiene pero varian esas 3 cosas.
 
 * VELOCIDAD: se define con una rapidez (num)
  
@@ -52,7 +41,6 @@ tiene poderes y una capacidad de batalla especifica.
 
 Poderes es una clase que tiene una capacidad de batalla fija en su calculo y con una agilidad,
 fuerza y habilidad especial variables segun el personaje y el tipo de poder.
-
 */
 
 //Parte 1: poderes y personajes
@@ -157,6 +145,7 @@ Un personaje es inmune a la radioactividad si tiene al menos un poder que se la 
 * Velocidad: NUNCA
 * Poder Amplificador: SIEMPRE
 Agrego esa data a c/poder.
+
 ***********REQUERIMIENTOS PARTE 3***********
 1) Saber si un personaje puede enfrentar un peligro
 2) Saber si el equipo puede afrontar un peligro (sensato).
@@ -198,16 +187,6 @@ class Equipo{
 	}
 }
 
-class Peligro{
-	var property capacidadBatalla = 0
-	var property desechosRadiactivos = false //Valor por default
-	
-	var property nivelComplejidad = 0
-	var property personajesQueSeBanca = 0
-	
-	method ganaPeligro(equipo)= personajesQueSeBanca > equipo.size()
-}
-
 /*
 ***********REQUERIMIENTOS PARTE 4***********
 1) Hacer que un personaje enfrente un peligro de manera individual
@@ -219,5 +198,47 @@ el peligro.
 2 condiciones para enfrentarlo en equipo: que TODOS puedan y que superen a la cant de personajes que se banca el peligro
 */
 
+class Peligro{
+	var property capacidadBatalla = 0
+	var property desechosRadiactivos = false //Valor por default
+	
+	var property nivelComplejidad = 0
+	var property personajesQueSeBanca = 0
+	
+	method ganaPeligro(equipo)= personajesQueSeBanca > equipo.size()
+}
+
+/*
+Parte 5
+Metahumano:
+* Cap batalla: doble que el de 1 personaje
+* Siempre inmune
+* Afronta un peligro -> incrementa estrategia e espiritualidad, ambos con el valor de complejidad del peligro
 
 
+Mago: metahumano especial
+* Tiene poder acumulado
+* Cap batalla= igual-metahumano + poderAcumulado
+* Afronta un peligro -> idem aumento estrategia+espiritualidad de metahumanos SI su poderAcumulado > 10
+  Post: pierde 5 puntos de poderAcumulado. Si tenia - de 5 -> queda en cero.
+
+*/
+class Metahumano inherits Personaje{
+	override method capacidadBatalla()= super() * 2
+	override method inmuneRadiacion()= true
+	override method enfrentar(peligro){
+		super(peligro)
+		espiritualidad += peligro.nivelComplejidad()
+	}
+}
+
+class Mago inherits Metahumano{
+	var property poderAcumulado
+	override method capacidadBatalla()= super() + poderAcumulado
+	override method enfrentar(peligro){
+		if(poderAcumulado > 10){
+			super(peligro)
+			poderAcumulado -= 5 
+		}
+	}
+}
